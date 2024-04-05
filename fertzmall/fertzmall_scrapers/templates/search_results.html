@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+</head>
+<body class="bg-slate-300">
+    {% load humanize %}
+    {% load static %}
+    <h1>Search Results for "{{ query }}"</h1>
+    
+      <!-- Sorting buttons -->
+    <div>
+        <a href="?q={{ query }}&sort=price_asc">Low to High</a>
+        <a href="?q={{ query }}&sort=price_desc">High to Low</a>
+    </div>
+
+    <!-- Search results-->
+    <hr class="border-2 mb-8">
+    
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 ml-8 border-2 px-8 rounded-lg">
+        {% for product in results %}
+        <div class="">
+            <a href="{{ product.url }}" target="_blank">
+                <div class=""><h2>{{ product.name }}</h2></div>
+                <img class="h-48 rounded-lg mt-0 pb-0" src="{{ product.image_url }}" alt="{{ product.name }}">
+                <p class="pb-2">Price: ₦{{ product.price|intcomma }}</p>
+                <hr class="border-2">
+            </a>
+        </div>
+        {% empty %}
+        <div>No results found.</div>
+        {% endfor %}
+    </div>
+
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if results.has_previous %}
+                <a href="?q={{ query }}&page=1">&laquo; first</a>
+                <a href="?q={{ query }}&page={{ results.previous_page_number }}">previous</a>
+            {% endif %}
+    
+            <span class="current">
+                Page {{ results.number }} of {{ results.paginator.num_pages }}.
+            </span>
+    
+            {% if results.has_next %}
+                <a href="?q={{ query }}&page={{ results.next_page_number }}">next</a>
+                <a href="?q={{ query }}&page={{ results.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+</body>
+</html>

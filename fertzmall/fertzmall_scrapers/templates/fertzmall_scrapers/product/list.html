@@ -1,0 +1,17 @@
+{% extends "fertzmall_scrapers/base.html" %}
+
+{% block title %}My Blog{% endblock %}
+
+{% block content %}
+    <h1>WELCOME TO FERTZMALL</h1>
+    {% for product in products %}
+    <h2>
+        <a href="{% url 'blog:post_detail' post.id %}">
+            {{ product.name }}
+        </a>
+    </h2>
+    <p class="date">
+         {{ product.image }} 
+    </p>
+    {% endfor %}
+{% endblock %}
