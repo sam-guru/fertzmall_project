@@ -1,31 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Fertz Mall</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-slate-300">
-    {% load humanize %}
-    {% load static %}
-    <nav class="fixed top-0 flex w-full flex-wrap items-center justify-between bg-zinc-50 py-2 shadow-dark-mild dark:bg-neutral-700 lg:py-4">
-        <div class="flex items-center justify-between w-full px-3">
-            <!-- Logo -->
-            <div class="flex items-center">
-                <!-- Add your logo here -->
-                <img src="{% static 'images/fertzmall-logo.png' %}" class="max-h-10" alt="Fertzmall Logo">
-    
-                <!-- Optional: Add text beside the logo -->
-                <a class="text-3xl font-bold text-green-900 dark:text-green ml-2" href="/">Fertz Mall</a>
-            </div>
-    
-            <!-- Navigation links -->
-            <div class="flex items-center">
-                <!-- Login link (floated to the right) -->
-                <a href="{% url 'login' %}" class="text-black dark:text-white">Login</a>
-            </div>
-        </div>
-    </nav>
-    <div class="md:px-8 pt-10 md:ml-8">
+{% extends "base.html" %}
+{% block title %} Fertz Mall - Home {% endblock %}
+{% load humanize %}
+{% block content %}
 
     <!-- Jumbotron  -->
     <section class="bg-center max-h-72 bg-[url('https://www.fb.org/imgz/Commodities/Soy/_1200x675_crop_center-center_82_line/ArkansasFB_soybeans_feat.jpg.webp')] bg-gray-700 bg-blend-multiply rounded-lg">
@@ -97,7 +73,6 @@
             {% endif %}
         </span>
     </div>
-    
-    
-</body>
-</html>
+
+
+{% endblock %}
