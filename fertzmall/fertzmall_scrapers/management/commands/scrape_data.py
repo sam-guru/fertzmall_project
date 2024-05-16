@@ -12,7 +12,7 @@ class Command(BaseCommand):
         Product.objects.all().delete()
         
         # Read data from the CSV file
-        df = pd.read_csv('products3.csv')
+        df = pd.read_csv('products.csv')
 
         # Iterate over each row in the DataFrame and create a Product object for each
         for index, row in df.iterrows():

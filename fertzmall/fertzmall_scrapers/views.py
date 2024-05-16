@@ -1,7 +1,14 @@
 from django.shortcuts import render
+from django.http import HttpResponse
+from django.contrib.auth import authenticate, login
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.contrib.auth.decorators import login_required
 from .models import Product
-from .forms import SearchForm
+from .forms import SearchForm, LoginForm, UserRegistrationForm
+from django.contrib.auth import logout
+from django.shortcuts import redirect
+from django.urls import reverse
+
 
 #function to handle display of products
 def product_list(request):
@@ -48,3 +55,30 @@ def search_results(request):
     page_obj = paginator.get_page(page_number)
     
     return render(request, 'search_results.html', {'results': page_obj, 'query': query, 'form': form})
+
+
+#user registration
+def register(request):
+    if request.method == 'POST':
+        user_form = UserRegistrationForm(request.POST)
+        if user_form.is_valid():
+            #Create a new user object but avoid saving it yet
+            new_user = user_form.save(commit=False)
+            #Set the chosen password
+            new_user.set_password( user_form.cleaned_data['password'])
+            new_user.save()
+            return render(request, 'registration/dashboard.html', {'new_user': new_user})
+    else:
+        user_form = UserRegistrationForm()
+    return render(request, 'registration/register.html', {'user_form': user_form})
+
+def logged_out(request):
+    return render(request, 'registration/logged_out.html')
+
+
+#user dashboard
+@login_required
+def dashboard(request):
+    username = request.user.username
+    return render(request, 'registration/dashboard.html', {'username': username})
+

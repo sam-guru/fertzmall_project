@@ -1,10 +1,31 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException
 import pandas as pd
+
+
+# Configure Chrome options for headless mode
+# chrome_options = Options()
+# chrome_options.add_argument("--headless") 
+
+# Initialize the WebDriver
+service = Service(executable_path="chromedriver.exe")
+driver = webdriver.Chrome(service=service)
+
+
+# List of URLs to scrape
+urls = [
+    "https://afrimash.com/?s=fertilizer&post_type=product",
+   "https://afrimash.com/?s=fungicide&post_type=product",
+    "https://afrimash.com/?s=pesticide&post_type=product"
+]
+
+
+
 
 # Function to scrape data from a single page
 def scrape_page(driver, product_image, product_name, product_price, product_url):
@@ -30,15 +51,7 @@ def scrape_page(driver, product_image, product_name, product_price, product_url)
         except NoSuchElementException:
             pass
 
-# List of URLs to scrape
-urls = [
-    #"https://afrimash.com/?s=fertilizer&post_type=product",
-   # "https://afrimash.com/?s=fungicide&post_type=product",
-    "https://afrimash.com/?s=pesticide&post_type=product"
-]
 
-service = Service(executable_path="chromedriver.exe")
-driver = webdriver.Chrome(service=service)
 
 # Initializing the lists to store scraped data
 product_image = []
@@ -72,6 +85,6 @@ product_url = product_url[:min_length]
 
 # Create DataFrame
 df_books = pd.DataFrame({'Name': product_name, 'Image_URL': product_image, 'Price': product_price, 'URL': product_url })
-df_books.to_csv('products3.csv', index=False)
+df_books.to_csv('products.csv', index=False)
 
 driver.quit()
