@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Logged out{% endblock %}
+
+{% block content %}
+<div class="py-20 md:my-20 mb-20">
+    <div class="grid h-16 place-items-center mb-36">
+        <h1 class="pb-6 text-3xl font-medium"> Registration successful</h1>
+        
+        <div class="p-4 border rounded-lg bg-gray-200">
+            <form action="{% url 'login' %}" method="post">
+                {% csrf_token %}
+                
+                <p><input class="mt-2 p-4 border rounded-lg cursor-pointer text-white bg-green-900 hover:bg-blue-600" type="submit" value="Log in to continue"></P>
+            </form>
+            
+        </div>
+      </div>
+
+{% endblock %}
+
+
+
+

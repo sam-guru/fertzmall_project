@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block title %} Search Results - {{ query }} {% endblock %}
+{% load humanize %}
+
+{% block content %}
+    <div class="max-w-7xl mx-auto">
+        
+        <!--search bar -->
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 mb-10">
+            <form action="{% url 'search_results' %}" method="get" class="max-w-2xl mx-auto">   
+                <div class="relative flex items-center">
+                    <div class="absolute inset-y-0 start-0 flex items-center ps-4 pointer-events-none">
+                        <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </div>
+                    <input type="search" name="query" value="{{ query }}"
+                           class="block w-full p-4 ps-12 text-sm text-slate-900 border border-slate-200 rounded-xl bg-slate-50 focus:ring-2 focus:ring-green-500 focus:bg-white outline-none transition-all" 
+                           placeholder="Search for something else..." required />
+                    <button type="submit" class="absolute end-2 px-6 py-2 bg-green-700 hover:bg-green-800 text-white font-bold rounded-lg transition-colors">
+                        Search
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- header and sort --> 
+        <div class="flex flex-col md:flex-row justify-between items-end mb-6 px-2 gap-4">
+            <div>
+                <p class="text-sm font-semibold text-green-700 uppercase tracking-wider mb-1">Search Results</p>
+                <h1 class="text-3xl font-extrabold text-slate-800">Showing matches for <span class="text-green-600">"{{ query }}"</span></h1>
+            </div>
+            
+            <div class="flex gap-2">
+                <a href="?query={{ query }}&sort=price_asc" class="px-4 py-2 text-xs font-bold uppercase tracking-tight text-slate-600 bg-white border border-slate-200 rounded-lg hover:border-green-500 hover:text-green-600 transition shadow-sm">
+                    Price ↑ Low
+                </a>
+                <a href="?query={{ query }}&sort=price_desc" class="px-4 py-2 text-xs font-bold uppercase tracking-tight text-slate-600 bg-white border border-slate-200 rounded-lg hover:border-green-500 hover:text-green-600 transition shadow-sm">
+                    Price ↓ High
+                </a>
+            </div>
+        </div>
+
+        <hr class="border-slate-200 mb-8">
+        
+        <!-- search result grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+            {% for product in results %}
+            <div class="group bg-white rounded-2xl shadow-sm hover:shadow-md transition-all border border-slate-100 overflow-hidden flex flex-col">
+                <a href="{{ product.url }}" target="_blank" class="flex flex-col h-full">
+                    <div class="relative aspect-square bg-slate-50 p-4 overflow-hidden">
+                        <img class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300" src="{{ product.image_url }}" alt="{{ product.name }}">
+                    </div>
+                    <div class="p-4 flex flex-col flex-grow">
+                        <h2 class="text-sm font-bold text-slate-800 line-clamp-2 h-10 mb-3">{{ product.name }}</h2>
+                        <div class="mt-auto flex items-center justify-between">
+                            <p class="text-lg font-black text-green-700">₦{{ product.price|intcomma }}</p>
+                            <span class="text-[10px] bg-slate-100 px-2 py-1 rounded font-bold text-slate-500">VIEW</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% empty %}
+            <!-- empty state -->
+            <div class="col-span-full py-20 text-center">
+                <div class="bg-slate-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-10 h-10 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 9.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </div>
+                <h3 class="text-xl font-bold text-slate-800">No results found</h3>
+                <p class="text-slate-500">Try checking your spelling or using more general terms.</p>
+                <a href="/" class="mt-6 inline-block text-green-700 font-bold hover:underline">Back to Shop</a>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- pagination -->
+        {% if results.has_other_pages %}
+        <div class="flex flex-col items-center mt-16 mb-12">
+            <nav class="inline-flex shadow-sm rounded-xl overflow-hidden border border-slate-200">
+                {% if results.has_previous %}
+                    <a href="?query={{ query }}&page=1" class="px-4 py-2 bg-white text-sm font-medium text-slate-600 hover:bg-slate-50 border-r border-slate-200">First</a>
+                    <a href="?query={{ query }}&page={{ results.previous_page_number }}" class="px-4 py-2 bg-white text-sm font-medium text-slate-600 hover:bg-slate-50 border-r border-slate-200">Prev</a>
+                {% endif %}
+        
+                <span class="px-6 py-2 bg-green-50 text-green-700 text-sm font-bold">
+                    {{ results.number }} of {{ results.paginator.num_pages }}
+                </span>
+        
+                {% if results.has_next %}
+                    <a href="?query={{ query }}&page={{ results.next_page_number }}" class="px-4 py-2 bg-white text-sm font-medium text-slate-600 hover:bg-slate-50 border-l border-slate-200">Next</a>
+                    <a href="?query={{ query }}&page={{ results.paginator.num_pages }}" class="px-4 py-2 bg-white text-sm font-medium text-slate-600 hover:bg-slate-50 border-l border-slate-200">Last</a>
+                {% endif %}
+            </nav>
+        </div>
+        {% endif %}
+    
+    </div>
+{% endblock %}

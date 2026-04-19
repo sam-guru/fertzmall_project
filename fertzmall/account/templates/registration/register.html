@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %} Create and account {% endblock %}
+
+{% block content %}
+    <div class="py-20 md:my-20 mb-20">
+        <div class="grid h-16 place-items-center mb-36">
+            <h1 class="pb-6 text-3xl font-medium"> Sign Up </h1>
+            {% if form.errors %}
+                <p>
+                Your username and password didn't match.
+                Please try again.
+                </p>
+            {% else %}
+                <p>Please, sign up using the form below:</p>
+            {% endif %}
+            <div class="p-10 border rounded-lg bg-gray-200">
+                <form method="post">
+		            {% csrf_token %}
+                    <div>
+                        <label for="id_username" class="block text-sm font-medium text-gray-700">Username</label>
+                        {{ user_form.username }}
+                        {% if user_form.username.errors %}
+                            <p class="text-red-500">{{ user_form.username.errors }}</p>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <label for="id_first_name" class="block text-sm font-medium text-gray-700">First Name</label>
+                        {{ user_form.first_name }}
+                        {% if user_form.first_name.errors %}
+                            <p class="text-red-500">{{ user_form.first_name.errors }}</p>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <label for="id_last_name" class="block text-sm font-medium text-gray-700">Last Name</label>
+                        {{ user_form.last_name }}
+                        {% if user_form.last_name.errors %}
+                            <p class="text-red-500">{{ user_form.last_name.errors }}</p>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <label for="id_email" class="block text-sm font-medium text-gray-700">Email</label>
+                        {{ user_form.email }}
+                        {% if user_form.email.errors %}
+                            <p class="text-red-500">{{ user_form.email.errors }}</p>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <label for="id_password" class="block text-sm font-medium text-gray-700">Password</label>
+                        {{ user_form.password }}
+                        {% if user_form.password.errors %}
+                            <p class="text-red-500">{{ user_form.password.errors }}</p>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <label for="id_password2" class="block text-sm font-medium text-gray-700">Repeat Password</label>
+                        {{ user_form.password2 }}
+                        {% if user_form.password2.errors %}
+                            <p class="text-red-500">{{ user_form.password2.errors }}</p>
+                        {% endif %}
+                    </div>
+                    <p><input class="mt-2 p-4 border rounded-lg cursor-pointer text-white bg-green-900 hover:bg-blue-600" type="submit" value="Create my account"></P>
+                </form>
+
+                <p class="text-sm">Already registered? 
+                    <a class="text-blue-900" href="{% url 'login' %}">
+                        Login here
+                    </a>
+                </p>
+            </div>
+          </div>
+    
+    </div>
+    <div class="pt-10 pb-10 mb-20">
+
+    </div>
+    
+{% endblock %}

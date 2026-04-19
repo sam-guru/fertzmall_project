@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %} Log-in {% endblock %}
+
+{% block content %}
+    <div class="py-20 md:my-20 mb-20">
+        <div class="grid h-16 place-items-center mb-36">
+            <h1 class="pb-6 text-3xl font-medium"> Log-in </h1>
+            {% if form.errors %}
+                <p>
+                Your username and password didn't match.
+                Please try again.
+                </p>
+            {% else %}
+                <p>Please, use the following form to log-in:</p>
+            {% endif %}
+            <div class="p-4 border rounded-lg bg-gray-200">
+                <form action="{% url 'login' %}" method="post">
+                    {% csrf_token %}
+                    <div class="pb-6 text-lg space-x-2">
+                        {{ form.username.label_tag }}
+                        {{ form.username }}
+                    </div>
+                    <div class="pb-6 text-lg space-x-2">
+                        {{ form.password.label_tag }}
+                        {{ form.password }}
+                    </div>
+                    <p><input class="mt-2 p-4 border rounded-lg cursor-pointer text-white bg-green-900 hover:bg-blue-600" type="submit" value="Log in"></P>
+                </form>
+                <p class="hover:text-blue-900 cursor-pointer text-sm">
+                    <a href="{% url 'password_reset' %}">
+                        Forgotten your password?
+                    </a>
+                </p>
+                <p class="text-sm">Not registered yet? 
+                    <a class="text-blue-900" href="{% url 'register' %}">
+                        Register here
+                    </a>
+                </p>
+            </div>
+          </div>
+    
+    </div>
+    
+{% endblock %}
