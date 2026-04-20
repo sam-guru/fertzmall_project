@@ -5,7 +5,7 @@
 {% block content %}
     <div class="max-w-7xl mx-auto">
         
-        <!-- Refined Search Bar -->
+        <!-- search bar -->
         <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 mb-10">
             <form action="{% url 'search_results' %}" method="get" class="max-w-2xl mx-auto">   
                 <div class="relative flex items-center">
@@ -22,7 +22,7 @@
             </form>
         </div>
 
-        <!-- Header & Sort Toolbar -->
+        <!-- header and sort toolbar -->
         <div class="flex flex-col md:flex-row justify-between items-end mb-6 px-2 gap-4">
             <div>
                 <p class="text-sm font-semibold text-green-700 uppercase tracking-wider mb-1">Search Results</p>
@@ -41,7 +41,7 @@
 
         <hr class="border-slate-200 mb-8">
         
-        <!-- Results Grid -->
+        <!-- result grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
             {% for product in results %}
             <div class="group bg-white rounded-2xl shadow-sm hover:shadow-md transition-all border border-slate-100 overflow-hidden flex flex-col">
@@ -59,7 +59,7 @@
                 </a>
             </div>
             {% empty %}
-            <!-- Empty State -->
+            <!-- empty state -->
             <div class="col-span-full py-20 text-center">
                 <div class="bg-slate-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
                     <svg class="w-10 h-10 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 9.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
@@ -71,7 +71,7 @@
             {% endfor %}
         </div>
 
-        <!-- Pagination -->
+        <!-- pagination -->
         {% if results.has_other_pages %}
         <div class="flex flex-col items-center mt-16 mb-12">
             <nav class="inline-flex shadow-sm rounded-xl overflow-hidden border border-slate-200">
